@@ -80,29 +80,23 @@ A aplicação estará disponível em: **http://localhost:3000**
 ### Tabelas principais:
 
 **users**
-- `id` (UUID)
-- `name` (string, obrigatório)
-- `email` (string, obrigatório, único)
-- `encrypted_password` (string)
-- Campos do Devise (reset_password, remember_me, etc.)
+- `id` 
+- `name` 
+- `email` 
 
 **todo_lists**
-- `id` (UUID)
-- `title` (string, obrigatório)
-- `description` (text)
-- `color` (string, padrão: #FFFFFF)
-- `user_id` (UUID, foreign key)
+- `id` 
+- `title` 
+- `description` 
+- `color` 
+- `user_id` 
 
 **todo_items**
-- `id` (UUID)
-- `content` (string, obrigatório)
-- `completed` (boolean, padrão: false)
-- `priority` (integer: 0=low, 1=medium, 2=high)
-- `todo_list_id` (UUID, foreign key)
-
-## ☁️ Deploy no Render
-
-O projeto está configurado para deploy automático no Render usando o arquivo `render.yaml`.
+- `id` 
+- `content` 
+- `completed` 
+- `priority` 
+- `todo_list_id` 
 
 ## 📱 Funcionalidades Principais
 
