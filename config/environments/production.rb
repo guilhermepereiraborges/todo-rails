@@ -79,6 +79,9 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
 
+  # Disable database connection during asset precompilation
+  config.assets.initialize_on_precompile = false if ENV['SECRET_KEY_BASE_DUMMY']
+
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
   #   "example.com",     # Allow requests from example.com
