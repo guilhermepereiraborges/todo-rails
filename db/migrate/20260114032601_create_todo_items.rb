@@ -5,7 +5,7 @@ class CreateTodoItems < ActiveRecord::Migration[8.1]
       t.boolean :completed, default: false
       t.datetime :due_date
       t.integer :priority, default: 0
-      t.references :todo_list, null: false, foreign_key: true, type: :uuids
+      t.references :todo_list, null: false, foreign_key: true, type: :uuid
 
       t.timestamps
     end
