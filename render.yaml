@@ -4,8 +4,8 @@ services:
     runtime: ruby
     plan: starter
     region: oregon 
-    buildCommand: ./render-build.sh
-    startCommand: bundle exec rails server -b 0.0.0.0 -p $PORT
+    buildCommand: ./bin/render-build.sh
+    startCommand: bundle exec puma -C config/puma.rb
     envVars:
       - key: RAILS_ENV
         value: production
@@ -19,66 +19,10 @@ services:
         fromDatabase:
           name: todo-rails-db
           property: connectionString
-      - key: DB_HOST
-        fromDatabase:
-          name: todo-rails-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: todo-rails-db
-          property: port
-      - key: DB_USERNAME
-        fromDatabase:
-          name: todo-rails-db
-          property: user
-      - key: DB_PASSWORD
-        fromDatabase:
-          name: todo-rails-db
-          property: password
-      - key: SOLID_QUEUE_IN_PUMA
-        value: true
       - key: SECRET_KEY_BASE
         generateValue: true
-      - key: TODO_RAILS_DATABASE_PASSWORD
-        fromDatabase:
-          name: todo-rails-db
-          property: password
     healthCheckPath: /up
     autoDeploy: true 
-
-  # Background Job Worker (opcional - descomente se precisar de workers separados)
-  # - type: worker
-  #   name: todo-rails-worker
-  #   runtime: ruby
-  #   plan: starter
-  #   region: oregon
-  #   buildCommand: bundle install
-  #   startCommand: bundle exec rails solid_queue:start
-  #   envVars:
-  #     - key: RAILS_ENV
-  #       value: production
-  #     - key: RAILS_MASTER_KEY
-  #       sync: false
-  #     - key: DATABASE_URL
-  #       fromDatabase:
-  #         name: todo-rails-db
-  #         property: connectionString
-  #     - key: DB_HOST
-  #       fromDatabase:
-  #         name: todo-rails-db
-  #         property: host
-  #     - key: DB_PORT
-  #       fromDatabase:
-  #         name: todo-rails-db
-  #         property: port
-  #     - key: DB_USERNAME
-  #       fromDatabase:
-  #         name: todo-rails-db
-  #         property: user
-  #     - key: DB_PASSWORD
-  #       fromDatabase:
-  #         name: todo-rails-db
-  #         property: password
 
 databases:
   - name: todo-rails-db
@@ -86,22 +30,4 @@ databases:
     user: todo_rails
     plan: starter 
     region: oregon
-    ipAllowList: [] 
     postgresMajorVersion: 16
-
-# Cron Jobs (opcional - para tarefas agendadas)
-# - type: cronjob
-#   name: todo-rails-cleanup
-#   runtime: ruby
-#   schedule: "0 0 * * *" # Diariamente à meia-noite
-#   buildCommand: bundle install
-#   startCommand: bundle exec rails runner "YourCleanupTask.perform"
-#   envVars:
-#     - key: RAILS_ENV
-#       value: production
-#     - key: RAILS_MASTER_KEY
-#       sync: false
-#     - key: DATABASE_URL
-#       fromDatabase:
-#         name: todo-rails-db
-#         property: connectionString
