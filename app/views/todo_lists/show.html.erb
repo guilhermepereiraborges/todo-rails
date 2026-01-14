@@ -1,0 +1,108 @@
+<%= turbo_frame_tag "modal" %>
+
+<div class="mb-6 flex items-center justify-between border-b border-gray-200 pb-4">
+  <div>
+    <div class="flex items-center space-x-3">
+      <span class="h-6 w-6 rounded-full border border-gray-200" style="background-color: <%= @todo_list.color %>"></span>
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900"><%= @todo_list.title %></h1>
+    </div>
+    <p class="mt-2 text-sm text-gray-500"><%= @todo_list.description %></p>
+  </div>
+  <div class="flex space-x-3">
+    <%= link_to "Editar", edit_todo_list_path(@todo_list), data: { turbo_frame: "modal" }, class: "rounded bg-white px-3 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors" %>
+    <%= button_to "Excluir Lista", @todo_list, method: :delete, form: {data: {turbo_confirm: "Tem certeza? Isso apagará todos os itens."}}, class: "rounded bg-red-50 px-3 py-1.5 text-sm font-semibold text-red-600 shadow-sm ring-1 ring-inset ring-red-300 hover:bg-red-100 cursor-pointer transition-colors" %>
+  </div>
+</div>
+
+<div class="mb-8 bg-gray-50 p-4 rounded-lg border border-gray-200">
+  <%= form_with(model: [@todo_list, @todo_item], class: "flex gap-2") do |f| %>
+    <%= f.text_field :content, placeholder: "Adicionar nova tarefa...", class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-3" %>
+    
+    <%= f.select :priority, TodoItem.priorities.keys.map { |k| [I18n.t("activerecord.enums.todo_item.priority.#{k}"), k] }, {}, class: "rounded-md border-0 py-1.5 pl-3 pr-8 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 w-32 bg-white" %>
+    
+    <%= f.submit "Adicionar", class: "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 cursor-pointer" %>
+  <% end %>
+</div>
+
+<% 
+  persisted_items = @todo_list.todo_items.select(&:persisted?)
+  pending_items = persisted_items.reject(&:completed?)
+  completed_items = persisted_items.select(&:completed?)
+%>
+
+<div class="space-y-4">
+  <div class="space-y-2">
+    <% pending_items.each do |item| %>
+      <div class="group flex items-center justify-between p-3 bg-white rounded-md border border-gray-200 shadow-sm hover:border-indigo-300 transition-colors">
+        <div class="flex items-center gap-3">
+          <%= button_to complete_todo_list_todo_item_path(@todo_list, item), method: :patch, class: "flex items-center cursor-pointer" do %>
+            <div class="h-5 w-5 rounded-full border-2 border-gray-300 group-hover:border-indigo-500 transition-colors"></div>
+          <% end %>
+
+          <div>
+            <p class="text-sm font-medium text-gray-900"><%= item.content %></p>
+            <div class="flex gap-2 mt-0.5">
+              <span class="text-xs text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded">
+                <%= I18n.t("activerecord.enums.todo_item.priority.#{item.priority}") %>
+              </span>
+              <% if item.due_date %>
+                <span class="text-xs text-gray-500">• Vence em: <%= item.due_date.strftime("%d/%m") %></span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <%= button_to todo_list_todo_item_path(@todo_list, item), method: :delete, class: "text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity" do %>
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if completed_items.any? %>
+    <% if pending_items.any? %>
+      <div class="relative py-4">
+        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+          <div class="w-full border-t border-gray-300"></div>
+        </div>
+        <div class="relative flex justify-center">
+          <span class="bg-gray-50 px-2 text-sm text-gray-500">Concluídas</span>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="space-y-2 opacity-60">
+      <% completed_items.each do |item| %>
+        <div class="group flex items-center justify-between p-3 bg-white rounded-md border border-gray-200 shadow-sm transition-colors">
+          <div class="flex items-center gap-3">
+            <%= button_to complete_todo_list_todo_item_path(@todo_list, item), method: :patch, class: "flex items-center cursor-pointer" do %>
+              <div class="h-5 w-5 rounded-full bg-green-500 flex items-center justify-center text-white">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"></path></svg>
+              </div>
+            <% end %>
+
+            <div class="line-through">
+              <p class="text-sm font-medium text-gray-900"><%= item.content %></p>
+            </div>
+          </div>
+
+          <%= button_to todo_list_todo_item_path(@todo_list, item), method: :delete, class: "text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity" do %>
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if persisted_items.empty? %>
+    <p class="text-center text-gray-500 py-10 italic border border-dashed border-gray-300 rounded-lg">
+      Sua lista está vazia. Adicione uma tarefa acima!
+    </p>
+  <% end %>
+</div>
+
+<div class="mt-6">
+  <%= link_to "← Voltar para Listas", todo_lists_path, class: "text-sm text-indigo-600 hover:text-indigo-900 transition-colors" %>
+</div>

@@ -1,0 +1,41 @@
+<%= form_with(model: todo_list, class: "contents", data: { turbo_frame: "_top" }) do |form| %>
+  <% if todo_list.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mb-4 text-sm">
+      <h2><%= pluralize(todo_list.errors.count, "erro") %> impediu esta lista de ser salva:</h2>
+      <ul class="list-disc ml-6">
+        <% todo_list.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="space-y-4">
+    <div>
+      <%= form.label :title, "Título", class: "block text-sm font-medium leading-6 text-gray-900 after:content-['*'] after:ml-0.5 after:text-red-500" %>
+      <div class="mt-2">
+        <%= form.text_field :title, required: true, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2" %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.label :color, "Cor", class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <div class="mt-2">
+        <%= form.color_field :color, class: "block w-full h-10 rounded-md border-0 p-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 cursor-pointer" %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.label :description, "Descrição", class: "block text-sm font-medium leading-6 text-gray-900" %>
+      <div class="mt-2">
+        <%= form.text_area :description, rows: 3, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 flex items-center justify-end gap-x-6 pt-4 border-t border-gray-100">
+    <%= link_to "Cancelar", todo_list.persisted? ? todo_list_path(todo_list) : todo_lists_path, class: "text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700" %>
+    
+    <%= form.submit "Salvar Lista", class: "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 cursor-pointer" %>
+  </div>
+<% end %>

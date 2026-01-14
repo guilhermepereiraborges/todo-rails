@@ -1,0 +1,57 @@
+<%= turbo_frame_tag "modal" %>
+
+<div class="flex items-center justify-between mb-8">
+  <h2 class="text-2xl font-bold text-gray-900">Minhas Listas</h2>
+  
+  <%= link_to new_todo_list_path, data: { turbo_frame: "modal" }, class: "inline-flex items-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 transition-colors" do %>
+    <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+    </svg>
+    Nova Lista
+  <% end %>
+</div>
+
+<% if @todo_lists.any? %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @todo_lists.each do |list| %>
+      <%= link_to list, class: "block group" do %>
+        
+        <div class="flex items-center gap-6 p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:border-indigo-300 hover:shadow-md transition-all h-full">
+          
+          <div class="flex-shrink-0"> 
+            <span class="flex items-center justify-center h-12 w-12 rounded-full ring-2 ring-gray-50" style="background-color: <%= list.color.presence || '#6366f1' %>;">
+              <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+              </svg>
+            </span>
+          </div>
+
+          <div class="flex-1 min-w-0">
+            <p class="text-base font-bold text-gray-900 truncate group-hover:text-indigo-600">
+              <%= list.title %>
+            </p>
+            <p class="text-sm text-gray-500 truncate">
+              <%= list.description.presence || "Sem descrição" %>
+            </p>
+          </div>
+
+          <% pending_count = list.todo_items.where(completed: false).count %>
+          <% if pending_count > 0 %>
+            <div class="flex-shrink-0">
+              <span class="text-sm font-bold text-gray-600">
+                <%= pending_count %>
+              </span>
+            </div>
+          <% end %>
+
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+<% else %>
+  <div class="text-center py-20 border-2 border-dashed border-gray-300 rounded-lg bg-white">
+    <h3 class="text-base font-semibold text-gray-900">Você ainda não tem listas</h3>
+    <p class="mt-1 text-sm text-gray-500">Crie uma nova lista para começar a se organizar.</p>
+  </div>
+<% end %>
