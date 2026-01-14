@@ -1,24 +1,136 @@
-# README
+# 📝 Todo Rails
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Uma aplicação moderna de gerenciamento de tarefas construída com Ruby on Rails 8.1, PostgreSQL e Tailwind CSS.
 
-Things you may want to cover:
+## ✨ Funcionalidades
 
-* Ruby version
+- 🔐 Autenticação de usuários com Devise
+- 📋 Criação e gerenciamento de listas de tarefas
+- ✅ Adicionar, editar e completar tarefas
+- 🎨 Interface moderna com Tailwind CSS
+- 🎯 Priorização de tarefas (baixa, média, alta)
+- 🎨 Personalização de cores para listas
 
-* System dependencies
+## 🛠️ Tecnologias
 
-* Configuration
+- **Ruby**: 3.4.8
+- **Rails**: 8.1.2
+- **Banco de dados**: PostgreSQL 14+
+- **CSS Framework**: Tailwind CSS
+- **Autenticação**: Devise
 
-* Database creation
+## 📋 Pré-requisitos
 
-* Database initialization
+Antes de começar, certifique-se de ter instalado:
 
-* How to run the test suite
+- Ruby 3.4.8 (recomendado usar [rbenv](https://github.com/rbenv/rbenv) ou [rvm](https://rvm.io/))
+- Docker
+- Git
 
-* Services (job queues, cache servers, search engines, etc.)
+## 🚀 Instalação e Configuração
 
-* Deployment instructions
+### 1. Clone o repositório
 
-* ...
+```bash
+git clone https://github.com/guilhermepereiraborges/todo-rails.git
+cd todo-rails
+```
+
+### 2. Instale as dependências do Ruby
+
+```bash
+bundle install
+```
+
+### 3. Configure as variáveis de ambiente
+
+Crie um arquivo `.env` na raiz do projeto:
+
+```bash
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=sua_senha_aqui
+
+```
+
+### 4. Configure o banco de dados
+
+#### Docker Compose
+
+Execute os comandos:
+
+```bash
+docker-compose up -d
+bin/rails db:create
+bin/rails db:migrate
+```
+
+### 5. Inicie o servidor de desenvolvimento
+
+```bash
+bin/dev
+```
+
+A aplicação estará disponível em: **http://localhost:3000**
+
+## 🗄️ Estrutura do Banco de Dados
+
+### Tabelas principais:
+
+**users**
+- `id` (UUID)
+- `name` (string, obrigatório)
+- `email` (string, obrigatório, único)
+- `encrypted_password` (string)
+- Campos do Devise (reset_password, remember_me, etc.)
+
+**todo_lists**
+- `id` (UUID)
+- `title` (string, obrigatório)
+- `description` (text)
+- `color` (string, padrão: #FFFFFF)
+- `user_id` (UUID, foreign key)
+
+**todo_items**
+- `id` (UUID)
+- `content` (string, obrigatório)
+- `completed` (boolean, padrão: false)
+- `priority` (integer: 0=low, 1=medium, 2=high)
+- `todo_list_id` (UUID, foreign key)
+
+## ☁️ Deploy no Render
+
+O projeto está configurado para deploy automático no Render usando o arquivo `render.yaml`.
+
+## 📱 Funcionalidades Principais
+
+### Autenticação
+- Registro de novos usuários
+- Login/Logout
+- Recuperação de senha
+
+### Listas de Tarefas
+- Criar nova lista
+- Editar lista existente
+- Excluir lista (e todas as tarefas associadas)
+- Personalizar cor da lista
+
+### Tarefas
+- Adicionar nova tarefa
+- Marcar como completa/incompleta
+- Editar tarefa
+- Excluir tarefa
+- Definir prioridade
+
+
+## 📧 Contato
+
+Guilherme Pereira Borges - [@guilhermepereiraborges](https://github.com/guilhermepereiraborges)
+
+Link do projeto: [https://github.com/guilhermepereiraborges/todo-rails](https://github.com/guilhermepereiraborges/todo-rails)
+
+---
+
+Feito com ❤️ usando Ruby on Rails
