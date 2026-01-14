@@ -20,9 +20,11 @@
         </div>
       </div>
     <% end %>
-
-    <div class="mt-6 text-center text-sm">
-      <%= render "devise/shared/links" %>
-    </div>
+        <div class="mt-8 text-center border-t border-gray-100 pt-6">
+        <p class="text-sm text-gray-600">
+          Lembrou a senha? 
+          <%= link_to "Voltar para o login", new_session_path(resource_name), class: "font-semibold text-indigo-600 hover:text-indigo-800 transition-colors" %>
+        </p>
+      </div>
   </div>
 </div>
