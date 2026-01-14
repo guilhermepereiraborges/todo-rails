@@ -1,31 +1,90 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Todo Rails" %></title>
+    <title>ToDo</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Todo Rails">
-    <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="bg-gray-50 text-gray-800 font-sans antialiased">
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex">
+            <div class="flex-shrink-0 flex items-center">
+              <%= link_to root_path, class: "text-2xl font-bold text-indigo-600 tracking-tighter" do %>
+                V360<span class="text-gray-900">Tasks</span>
+              <% end %>
+            </div>
+          </div>
+          
+          <div class="flex items-center space-x-4">
+            <% if user_signed_in? %>
+              <%= link_to edit_user_registration_path, class: "text-sm text-gray-500 hover:text-indigo-600 transition-colors flex items-center" do %>
+                Olá, <strong class="ml-1"><%= current_user.name %></strong>
+              <% end %>
+              
+              <%= button_to "Sair", destroy_user_session_path, method: :delete, class: "text-sm text-red-600 hover:text-red-800 font-medium cursor-pointer bg-transparent border-0" %>
+            <% else %>
+              <%= link_to "Entrar", new_user_session_path, class: "text-indigo-600 hover:text-indigo-800 font-medium text-sm" %>
+              <%= link_to "Criar Conta", new_user_registration_path, class: "ml-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm font-medium transition-colors" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+      <% flash.each do |key, value| %>
+        <% 
+          color_class = case key
+            when 'notice' then 'bg-green-100 border-green-400 text-green-700'
+            when 'alert', 'error' then 'bg-red-100 border-red-400 text-red-700'
+            else 'bg-blue-100 border-blue-400 text-blue-700'
+          end 
+        %>
+        <div class="<%= color_class %> border-l-4 p-4 mb-4 rounded shadow-sm" role="alert">
+          <p class="font-bold"><%= key == 'notice' ? 'Sucesso' : 'Atenção' %></p>
+          <p><%= value %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <%= yield %>
     </main>
+
+    <div id="turbo-confirm-modal" class="relative z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+      <div class="fixed inset-0 bg-gray-500/75 transition-opacity backdrop-blur-sm"></div>
+      <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-gray-200">
+            <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div class="sm:flex sm:items-start">
+                <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                  </svg>
+                </div>
+                <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <h3 class="text-base font-semibold leading-6 text-gray-900" id="turbo-confirm-title">Confirmação</h3>
+                  <div class="mt-2">
+                    <p id="turbo-confirm-message" class="text-sm text-gray-500">Tem certeza?</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <button id="turbo-confirm-accept" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Confirmar</button>
+              <button id="turbo-confirm-cancel" type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
