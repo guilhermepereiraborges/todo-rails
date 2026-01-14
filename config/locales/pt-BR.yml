@@ -1,0 +1,290 @@
+pt-BR:
+  activerecord:
+    models:
+      todo_list:
+        one: Lista
+        other: Listas
+      todo_item:
+        one: Item
+        other: Itens
+      user:
+        one: Usuário
+        other: Usuários
+
+    enums:
+      todo_item:
+        priority:
+          low: "Baixa"
+          medium: "Média"
+          high: "Alta"
+
+    attributes:
+      todo_list:
+        title: Título
+        description: Descrição
+        color: Cor
+      todo_item:
+        content: Conteúdo
+        due_date: Data de vencimento
+        priority: Prioridade
+        completed: Concluído
+      user:
+        name: Nome
+        email: E-mail
+        password: Senha
+        password_confirmation: Confirmação de senha
+        current_password: Senha atual
+
+    errors:
+      messages:
+        record_invalid: "A validação falhou: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "Não é possível excluir o registro pois existe um %{record} dependente"
+          has_many: "Não é possível excluir o registro pois existem %{record} dependentes"
+      models:
+        todo_list:
+          attributes:
+            title:
+              blank: "não pode ficar em branco"
+        todo_item:
+          attributes:
+            content:
+              blank: "não pode ficar em branco"
+        user:
+          attributes:
+            email:
+              blank: "não pode ficar em branco"
+              taken: "já está em uso"
+              invalid: "não é válido"
+            password:
+              blank: "não pode ficar em branco"
+              too_short: "é muito curto (mínimo: %{count} caracteres)"
+            password_confirmation:
+              confirmation: "não é igual à senha"
+            name:
+              blank: "não pode ficar em branco"
+
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: "deve ser aceito"
+      blank: "não pode ficar em branco"
+      confirmation: "não é igual a %{attribute}"
+      empty: "não pode ficar vazio"
+      equal_to: "deve ser igual a %{count}"
+      even: "deve ser par"
+      exclusion: "não está disponível"
+      greater_than: "deve ser maior que %{count}"
+      greater_than_or_equal_to: "deve ser maior ou igual a %{count}"
+      inclusion: "não está incluído na lista"
+      invalid: "não é válido"
+      less_than: "deve ser menor que %{count}"
+      less_than_or_equal_to: "deve ser menor ou igual a %{count}"
+      model_invalid: "Validação falhou: %{errors}"
+      not_a_number: "não é um número"
+      not_an_integer: "não é um número inteiro"
+      odd: "deve ser ímpar"
+      other_than: "deve ser diferente de %{count}"
+      present: "deve ficar em branco"
+      required: "é obrigatório"
+      taken: "já está em uso"
+      too_long:
+        one: "é muito longo (máximo: 1 caractere)"
+        other: "é muito longo (máximo: %{count} caracteres)"
+      too_short:
+        one: "é muito curto (mínimo: 1 caractere)"
+        other: "é muito curto (mínimo: %{count} caracteres)"
+      wrong_length:
+        one: "não possui o tamanho esperado (deve ter 1 caractere)"
+        other: "não possui o tamanho esperado (deve ter %{count} caracteres)"
+
+  devise:
+    confirmations:
+      confirmed: "Sua conta foi confirmada com sucesso."
+      send_instructions: "Você receberá um e-mail com instruções sobre como confirmar sua conta em alguns minutos."
+      send_paranoid_instructions: "Se seu e-mail existir em nossa base de dados, você receberá um e-mail com instruções sobre como confirmar sua conta em alguns minutos."
+    failure:
+      already_authenticated: "Você já está logado."
+      inactive: "Sua conta ainda não foi ativada."
+      invalid: "E-mail ou senha inválidos."
+      locked: "Sua conta está bloqueada."
+      last_attempt: "Você tem mais uma tentativa antes de sua conta ser bloqueada."
+      not_found_in_database: "E-mail ou senha inválidos."
+      timeout: "Sua sessão expirou. Por favor, faça login novamente para continuar."
+      unauthenticated: "Você precisa fazer login ou se registrar para continuar."
+      unconfirmed: "Você precisa confirmar seu e-mail antes de continuar."
+    mailer:
+      confirmation_instructions:
+        subject: "Instruções de confirmação"
+      reset_password_instructions:
+        subject: "Instruções para redefinir sua senha"
+      unlock_instructions:
+        subject: "Instruções para desbloquear sua conta"
+      email_changed:
+        subject: "E-mail alterado"
+      password_change:
+        subject: "Senha alterada"
+    omniauth_callbacks:
+      failure: "Não foi possível autenticá-lo via %{kind} porque \"%{reason}\"."
+      success: "Autenticado com sucesso via %{kind}."
+    passwords:
+      no_token: "Você não pode acessar esta página sem vir de um e-mail de redefinição de senha. Se você veio de um e-mail de redefinição de senha, por favor, certifique-se de ter usado a URL completa fornecida."
+      send_instructions: "Você receberá um e-mail com instruções sobre como redefinir sua senha em alguns minutos."
+      send_paranoid_instructions: "Se seu e-mail existir em nossa base de dados, você receberá um link de recuperação de senha em alguns minutos."
+      updated: "Sua senha foi alterada com sucesso. Você está logado."
+      updated_not_active: "Sua senha foi alterada com sucesso."
+    registrations:
+      destroyed: "Sua conta foi cancelada com sucesso. Esperamos vê-lo novamente em breve."
+      signed_up: "Bem-vindo! Você se registrou com sucesso."
+      signed_up_but_inactive: "Você se registrou com sucesso. Porém, não foi possível fazer login porque sua conta ainda não foi ativada."
+      signed_up_but_locked: "Você se registrou com sucesso. Porém, não foi possível fazer login porque sua conta está bloqueada."
+      signed_up_but_unconfirmed: "Uma mensagem com um link de confirmação foi enviada para seu e-mail. Por favor, siga o link para ativar sua conta."
+      update_needs_confirmation: "Sua conta foi atualizada com sucesso, mas precisamos verificar seu novo endereço de e-mail. Por favor, verifique seu e-mail e siga o link de confirmação para confirmar seu novo e-mail."
+      updated: "Sua conta foi atualizada com sucesso."
+      updated_but_not_signed_in: "Sua conta foi atualizada com sucesso, mas como sua senha foi alterada, você precisa fazer login novamente."
+    sessions:
+      signed_in: "Login realizado com sucesso."
+      signed_out: "Logout realizado com sucesso."
+      already_signed_out: "Logout realizado com sucesso."
+    unlocks:
+      send_instructions: "Você receberá um e-mail com instruções sobre como desbloquear sua conta em alguns minutos."
+      send_paranoid_instructions: "Se sua conta existir, você receberá um e-mail com instruções sobre como desbloqueá-la em alguns minutos."
+      unlocked: "Sua conta foi desbloqueada com sucesso. Por favor, faça login para continuar."
+
+  flash:
+    actions:
+      create:
+        notice: "%{resource_name} foi criado(a) com sucesso."
+        alert: "Não foi possível criar %{resource_name}."
+      update:
+        notice: "%{resource_name} foi atualizado(a) com sucesso."
+        alert: "Não foi possível atualizar %{resource_name}."
+      destroy:
+        notice: "%{resource_name} foi excluído(a) com sucesso."
+        alert: "Não foi possível excluir %{resource_name}."
+
+  todo_lists:
+    index:
+      title: "Minhas Listas"
+      empty: "Você ainda não tem nenhuma lista."
+      new_list: "Criar Nova Lista"
+    new:
+      title: "Nova Lista"
+    edit:
+      title: "Editar Lista"
+    show:
+      add_item: "Adicionar Item"
+      no_items: "Esta lista ainda não possui itens."
+      completed: "concluído(s)"
+      pending: "pendente(s)"
+    form:
+      title_placeholder: "Nome da lista..."
+      description_placeholder: "Descrição opcional..."
+      color_label: "Escolha uma cor"
+    created: "Lista criada com sucesso!"
+    updated: "Lista atualizada com sucesso!"
+    destroyed: "Lista excluída com sucesso!"
+
+  todo_items:
+    priorities:
+      low: "Baixa"
+      medium: "Média"
+      high: "Alta"
+    created: "Item adicionado com sucesso!"
+    updated: "Item atualizado com sucesso!"
+    destroyed: "Item excluído com sucesso!"
+    completed: "Item marcado como concluído!"
+    uncompleted: "Item marcado como pendente!"
+    form:
+      content_placeholder: "O que você precisa fazer?"
+      due_date_label: "Data de vencimento"
+      priority_label: "Prioridade"
+
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d/%m"
+      long: "%d de %B de %Y"
+    day_names:
+      - domingo
+      - segunda-feira
+      - terça-feira
+      - quarta-feira
+      - quinta-feira
+      - sexta-feira
+      - sábado
+    abbr_day_names:
+      - dom
+      - seg
+      - ter
+      - qua
+      - qui
+      - sex
+      - sáb
+    month_names:
+      - ~
+      - janeiro
+      - fevereiro
+      - março
+      - abril
+      - maio
+      - junho
+      - julho
+      - agosto
+      - setembro
+      - outubro
+      - novembro
+      - dezembro
+    abbr_month_names:
+      - ~
+      - jan
+      - fev
+      - mar
+      - abr
+      - mai
+      - jun
+      - jul
+      - ago
+      - set
+      - out
+      - nov
+      - dez
+
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      short: "%d/%m %H:%M"
+      long: "%d de %B de %Y, %H:%M"
+
+  helpers:
+    select:
+      prompt: "Selecione..."
+    submit:
+      create: "Criar"
+      submit: "Salvar"
+      update: "Atualizar"
+    label:
+      todo_list:
+        title: "Título"
+        description: "Descrição"
+        color: "Cor"
+      todo_item:
+        content: "Conteúdo"
+        due_date: "Data de vencimento"
+        priority: "Prioridade"
+
+  actions:
+    back: "Voltar"
+    cancel: "Cancelar"
+    confirm: "Confirmar"
+    delete: "Excluir"
+    edit: "Editar"
+    save: "Salvar"
+    search: "Buscar"
+    show: "Ver"
+    new: "Novo"
+    
+  confirmations:
+    are_you_sure: "Tem certeza?"
+    delete_list: "Tem certeza que deseja excluir esta lista? Todos os itens serão perdidos."
+    delete_item: "Tem certeza que deseja excluir este item?"
